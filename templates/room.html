@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ room.title }} | {% endblock %}
+
+{% block content %}
+  {% block bootstrap %}
+  {% endblock %}
+
+
+
+
+
+  <div class="p-10 lg:p-20 text-center">
+    <h1 class="text-3xl lg:text-6xl text-white">{{ message.user.username }}</h1>
+  </div>
+  <div class="lg:w-2/4 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
+    <div class="chat-messages space-y-3" id="chat-messages">
+      {% for message in messages %}
+        <div style="display: flex; align-items: center;">
+          <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px" src="{{ user.image.url }}"
+               id="user-avatar"
+               alt="image"/>
+          <b>{{ message.user.username }}</b>: {{ message.text }}<br>
+        {% if message.image %}
+          <a class="fancybox" href="{{ message.image.url }}">
+            <img style="border-radius: 50%; margin-right: 5px" src="{{ message.image.url }}"
+                 alt="image"/>
+          </a>
+        {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="lg:w-2/4 mt-6 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
+
+    <form method="post" action="" class="flex" id="chat-message-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="text" name="text" class="flex-1 mr-3" placeholder="Your message..." id="chat-message-input">
+      <input type="file" name="file" id="chat-file-input">
+      
+      <button
+          class="px-5 py-3 rounded-xl text-white bg-teal-600 hover:bg-teal-700"
+          id="chat-message-submit"
+      >Submit
+      </button>
+    </form>
+
+{% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="mb-5 p-4 rounded-xl bg-red-300 text-white">
+                    <p>{{ field.name}} {{ error|escape }}</p>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ room.pk|json_script:"json-roomid" }}
+{{ request.user.username|json_script:"json-username" }}
+
+  <script>
+      const roomName = JSON.parse(document.getElementById('json-roomid').textContent);
+      const userName = JSON.parse(document.getElementById('json-username').textContent);
+      const userImageDom = document.querySelector('#user-avatar');
+      const chatSocket = new WebSocket(
+          `ws://${window.location.host}/ws/${roomName}/`
+      );
+
+      chatSocket.onclose = function (e) {
+        if (chatSocket.readyState !== WebSocket.OPEN) {
+            console.log('WebSocket is already in CLOSING or CLOSED state.');
+        }
+      };
+
+      chatSocket.onmessage = function (e) {
+          const data = JSON.parse(e.data);
+  if (data.message || (data.file && !data.message)) {
+    const messageHtml =
+  `<div style="display: flex; align-items: center;">
+      <img style="width: 50px; height: 50px; border-radius: 50%; margin-right: 5px;" src="${data.avatar}">
+      <b>${data.username}</b>: ${data.message}<br>${data.file ? `
+        <a class="fancybox" href="${data.file}">
+          <img style="border-radius: 50%; margin-right: 5px;" src="${data.file}">
+        </a>` : ''}
+    </div>`;
+    document.querySelector('#chat-messages').insertAdjacentHTML('beforeend', messageHtml);
+  } else if (data.error){
+    alert(data.error);
+  }
+};
+
+      document.querySelector('#chat-message-input').focus();
+      document.querySelector('#chat-message-input').addEventListener('keyup', function (e) {
+          if (e.keyCode === 13) {
+              document.querySelector('#chat-message-submit').click();
+          }
+      });
+
+      document.querySelector('#chat-message-submit').addEventListener('click', function (e) {
+          e.preventDefault();
+
+          const messageInputDom = document.querySelector('#chat-message-input');
+          const userFileDom = document.querySelector('#chat-file-input');
+          const message = messageInputDom.value;
+          const userFile = userFileDom.files[0];
+
+          const data = {
+              'message': message,
+              'username': userName,
+              'room': roomName,
+              'userImage': userImageDom.src,
+          };
+
+          if (userFile) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(event) {
+              const fileContentArray = new Uint8Array(event.target.result);
+              data.file = {
+                'name': userFile.name,
+                'type': userFile.type,
+                'size': userFile.size,
+                'content': Array.from(fileContentArray)
+              };
+              chatSocket.send(JSON.stringify(data));
+            };
+
+            fileReader.readAsArrayBuffer(userFile);
+          } else if (message) {
+              chatSocket.send(JSON.stringify(data));
+          }
+
+          messageInputDom.value = '';
+          userFileDom.value = '';
+      });
+  </script>
+{% endblock %}

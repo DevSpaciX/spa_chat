@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Log in | {% endblock %}
+
+{% block content %}
+<div class="p-10 lg:p-20 text-center">
+    <h1 class="text-3xl lg:text-6xl text-white">Create conversation</h1>
+</div>
+
+<form method="post" action="" class="lg:w-1/4 px-2 mx-auto">
+    {% csrf_token %}
+
+    <div class="mb-5">
+        <label class="text-white">Title</label>
+        <input type="text" name="title" class="w-full mt- px-4 py-2 rounded-xl">
+    </div>
+      <div class="mb-5">
+        <label class="text-white">Your first message</label>
+        <input type="text" name="main_message" class="w-full mt- px-4 py-2 rounded-xl">
+    </div>
+      <div class="mb-5">
+        <label class="text-white">Capcha</label>
+        {{ form.captcha }}
+    </div>
+
+{% if form.errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for field_errors in form.errors.values %}
+        {% for error in field_errors %}
+          {{ error }}
+        {% endfor %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+    <button class="px-5 py-3 rounded-xl text-white bg-teal-800 hover:bg-teal-700">Create</button>
+</form>
+{% endblock %}
