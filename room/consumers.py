@@ -50,11 +50,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             file_errors = self.validate_file(file_path)
             errors.extend(file_errors)
 
-        # вызываем первую функцию и добавляем ее ошибки в список errors
         websocket_errors = self.my_websocket_handler(message_text)
         errors.extend(websocket_errors)
 
-        # если есть ошибки, отправляем их клиенту
         if errors:
             await self.send_error(errors)
             return
@@ -67,7 +65,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
              "file": file_path_socket},
         )
 
-    # Receive message from room group
     async def chat_message(self, event):
         message = event["message"]
         username = event["username"]

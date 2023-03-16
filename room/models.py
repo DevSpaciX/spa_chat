@@ -1,3 +1,4 @@
+import os
 import re
 from django.core.files import File
 from django.contrib.auth import get_user_model
@@ -9,10 +10,7 @@ def validate_html_tag(value):
     allowed_tags = ["a", "code", "i", "strong"]
     pattern = re.compile(r'<(/)?\w+[^>]*>')
 
-    # Escape HTML tags that are not allowed
     value = re.escape(value)
-
-    # Validate allowed HTML tags and check for closing tags
     match = pattern.search(value)
     if match:
         tag, closing = match.group(0), match.group(1)
@@ -61,3 +59,8 @@ class Message(models.Model):
     def save(self, *args, **kwargs):
         self.clean()
         super(Message, self).save(*args, **kwargs)
+
+    @property
+    def extension(self):
+        name, extension = os.path.splitext(self.image.name)
+        return extension

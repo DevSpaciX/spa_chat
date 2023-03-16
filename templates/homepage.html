@@ -26,9 +26,10 @@
     {% for room in room_list %}
         <div class="w-full lg:w-1/4 px-3 py-3">
             <div class="p-4 bg-white shadow rounded-xl text-center">
-                <h2 class="mb-2 text-2xl font-semibold">{{ room.title }}</h2><br>
-              <h2 class="mb-2 text-xl font-semibold">{{ room.main_message }}</h2><br>
-                <h2 class="mb-2 text-xs font-semibold">{{ room.date_added }}</h2>
+                <h2 class="mb-1 text-2xl font-semibold">{{ room.title }}</h2><br>
+              <h2 class="mb-1 text-xl font-semibold">Author : {{ room.messages.first.user }}</h2><br>
+              <h2 class="mb-1 text-xl font-semibold">{{ room.main_message }}</h2><br>
+                <h2 class="mb-1 text-xs font-semibold">{{ room.date_added }}</h2>
 
                 <a href="{% url 'room:room' pk=room.pk %}" class="px-5 py-3 block rounded-xl text-white bg-teal-600 hover:bg-teal-700">Join</a>
             </div>

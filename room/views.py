@@ -42,9 +42,9 @@ class RoomFilter(filters.FilterSet):
         start_date = value.start
         end_date = value.stop
         if self.data.get('oldest_first'):
-            return queryset.filter(date_added__range=(start_date, end_date)).distinct()
+            return queryset.filter(date_added__range=(start_date, end_date))
         else:
-            return queryset.filter(date_added__range=(start_date, end_date)).distinct()
+            return queryset.filter(date_added__range=(start_date, end_date))
 
     def filter_oldest_first(self, queryset, name, value):
         if value:
@@ -60,7 +60,7 @@ class RoomFilter(filters.FilterSet):
 class ChatRoomsList(generic.ListView):
     model = Room
     template_name = "homepage.html"
-    paginate_by = 1
+    paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -68,8 +68,8 @@ class ChatRoomsList(generic.ListView):
         return context
 
     def get_queryset(self):
-        qs = super().get_queryset()
-        filter = RoomFilter(self.request.GET, queryset=qs)
+        queryset = super().get_queryset()
+        filter = RoomFilter(self.request.GET, queryset=queryset)
         return filter.qs.distinct()
 
 
