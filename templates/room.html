@@ -9,54 +9,112 @@
     <h1 class="text-3xl lg:text-6xl text-white">{{ message.user.username }}</h1>
   </div>
   <div class="lg:w-2/4 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
-    <div class="chat-messages space-y-3" id="chat-messages">
-      {% for message in messages %}
-        <div style="display: flex; align-items: center;">
-          <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px" src="{{ user.image.url }}"
-               id="user-avatar"
-               alt="image"/>
-          <b>{{ message.user.username }}</b>: {{ message.text }}<br>
-          {% if message.image %}
-            {% if message.image.url|split_last == 'txt' %}
-              <a href="{{ message.image.url }}" download>
-                <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px"
-                     src="/media/images/Circle-icons-folder.svg.png" alt="image">
-              </a>
-            {% else %}
-              <a class="fancybox" href="{{ message.image.url }}">
-                <img style="border-radius: 10%; margin-left: 10px" src="{{ message.image.url }}"
-                     alt="image"/>
-              </a>
-            {% endif %}
+  <div class="chat-messages space-y-3" id="chat-messages">
+    {% for message in messages %}
+      <div style="display: flex; align-items: center;">
+        <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px" src="{{ message.user.image.url }}"
+             id="user-avatar"
+             alt="image"/>
+
+        <b>{{ message.user.username }}</b>: {{ message.text }}
+        {% if message.image %}
+          {% if message.image.url|split_last == 'txt' %}
+            <a href="{{ message.image.url }}" download>
+              <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px"
+                   src="/media/images/Circle-icons-folder.svg.png" alt="image">
+            </a>
+          {% else %}
+            <a class="fancybox" href="{{ message.image.url }}">
+              <img style="border-radius: 10%; margin-left: 10px" src="{{ message.image.url }}"
+                   alt="image"/>
+            </a>
           {% endif %}
-          <button
-              class="ml-4 px-2 py-1 rounded-md text-sm font-medium text-gray-700 bg-gray-100 focus:outline-none focus:bg-gray-200"
-              onclick="replyMessage('{{ message.id }}')">Reply
-          </button>
-        </div>
-      {% endfor %}
-    </div>
+        {% endif %}
+        <button
+            class="ml-4 px-2 py-1 rounded-md text-sm font-medium text-gray-700 bg-gray-100 focus:outline-none focus:bg-gray-200"
+            id="chat-reply-to-input"
+            onclick="(function() { replyMessage('{{ message.id }}'); })()">Reply
+        </button>
+      </div>
+      {% if message.answers %}
+        {% for answer in message.answers.all %}
+          {% if forloop.first %}
+            <div class="nested-comment" style="display: flex;align-items: center;margin-left: 10px">
+              <img style="width: 50px;height: 50px;border-radius: 50%;margin-right: 10px"
+                   src="{{ answer.user.image.url }}"
+                   id="user-avatar"
+                   alt="image"/>
+              <b>{{ answer.user.username }}</b>: {{ answer.text }}
+              {% if answer.image %}
+                {% if answer.image.url|split_last == 'txt' %}
+                  <a href="{{ answer.image.url }}" download>
+                    <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px"
+                         src="/media/images/Circle-icons-folder.svg.png" alt="image">
+                  </a>
+                {% else %}
+                  <a class="fancybox" href="{{ answer.image.url }}">
+                    <img style="border-radius: 10%; margin-left: 10px" src="{{ answer.image.url }}"
+                         alt="image"/>
+                  </a>
+                {% endif %}
+              {% endif %}
+            </div>
+          {% else %}
+            <div class="nested-comment" style="display: flex;align-items: center;margin-left: 10px">
+              <img style="width: 50px;height: 50px;border-radius: 50%;margin-right: 10px"
+                   src="{{ answer.user.image.url }}"
+                   id="user-avatar"
+                   alt="image"/>
+              <b>{{ answer.user.username }}</b>: {{ answer.text }}
+              {% if answer.image %}
+                {% if answer.image.url|split_last == 'txt' %}
+                  <a href="{{ answer.image.url }}" download>
+                    <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px"
+                         src="/media/images/Circle-icons-folder.svg.png" alt="image">
+                  </a>
+                {% else %}
+                  <a class="fancybox" href="{{ answer.image.url }}">
+                    <img style="border-radius: 10%; margin-left: 10px" src="{{ answer.image.url }}"
+                         alt="image"/>
+                  </a>
+                {% endif %}
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
   </div>
-
-  <div class="lg:w-2/4 mt-6 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
-
-    <form method="post" action="" class="flex" id="chat-message-form" enctype="multipart/form-data">
+  <div class="bg-white rounded-xl" style="margin-bottom: 20px">
+    <form method="post" action="" class="inline-flex" id="chat-message-form" enctype="multipart/form-data">
       {% csrf_token %}
-      <input type="text" name="text" class="flex-1 mr-3" placeholder="Your message..." id="chat-message-input">
+      <input type="text" name="text" style="width: 500px" placeholder="Your message..." id="chat-message-input">
       <input type="hidden" name="reply_to" id="chat-reply-to-input">
-      <input type="file" name="file" id="chat-file-input">
-
+      <input type="file" name="file" style="margin: 10px" id="chat-file-input">
       <button
-          class="px-5 py-3 rounded-xl text-white bg-teal-600 hover:bg-teal-700"
+          class="px-5 py-3 rounded-xl text-white bg-teal-600 hover:bg-teal-200"
           id="chat-message-submit"
       >Submit
       </button>
     </form>
   </div>
+  </div>
+  <script>
+      var marginIncrease = 20;
+      var nestedComments = document.querySelectorAll('.nested-comment');
+      var marginLeft = 21;
+
+      for (var i = 1; i < nestedComments.length; i++) {
+          nestedComments[i].style.marginLeft = marginLeft + 'px';
+          marginLeft += marginIncrease;
+      }
+  </script>
+
+
+
   <script>
       function replyMessage(messageId) {
           document.getElementById('chat-reply-to-input').value = messageId;
-          console.log(messageId)
           document.getElementById('chat-message-input').focus();
       }
   </script>
@@ -85,25 +143,23 @@
           if (data.message || (data.file && !data.message)) {
               let fileHtml = '';
               if (data.file && data.file.endsWith('.txt')) {
-                  fileHtml = `
-        <div>
-          <a href="${data.file}" download>
-            <img src="/media/images/Circle-icons-folder.svg.png" style="height: 20px; width: 20px; margin-right: 5px;">
-          </a>
-        </div>
-      `;
+                  fileHtml =
+                      `<div>
+                          <a href="${data.file}" download>
+                            <img src="/media/images/Circle-icons-folder.svg.png" style="height: 20px; width: 20px; margin-right: 5px;">
+                          </a>
+                      </div>`;
               }
               const messageHtml =
                   `<div style="display: flex; align-items: center;">
-    <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px" src="${data.avatar}">
-    <b>${data.username}</b>: ${data.message}<br>${data.file ? `
-      ${fileHtml}
-      ${data.file.endsWith('.txt') ? '' : `
-        <a class="fancybox" href="${data.file}">
-          <img style="border-radius: 10%; margin-left: 10px;" src="${data.file}">
-        </a>`}
-    ` : ''}
-  </div>`;
+                <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px" src="${data.avatar}">
+<b>${data.username}</b>: ${data.message}${data.answer ? `<button style="float:right; margin-left: 5px;" class="ml-4 px-2 py-1 rounded-md text-sm font-medium text-gray-700 bg-gray-100" disabled>New answer!</button>` : ''}<br>${data.file ? `
+                    ${fileHtml}
+                    ${data.file.endsWith('.txt') ? '' : `
+                    <a class="fancybox" href="${data.file}">
+                        <img style="border-radius: 10%; margin-left: 10px;" src="${data.file}">
+                    </a>`}    ` : ''}
+            </div>`;
               document.querySelector('#chat-messages').insertAdjacentHTML('beforeend', messageHtml);
           } else if (data.error) {
               alert(data.error);
@@ -124,12 +180,16 @@
           const userFileDom = document.querySelector('#chat-file-input');
           const message = messageInputDom.value;
           const userFile = userFileDom.files[0];
+          const answerDom = document.querySelector('#chat-reply-to-input')
+          const answer = answerDom.value
+          console.log(answer)
 
           const data = {
               'message': message,
               'username': userName,
               'room': roomName,
               'userImage': userImageDom.src,
+              'answer_to': answer,
           };
 
           if (userFile) {
