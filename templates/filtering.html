@@ -1,0 +1,13 @@
+<form method="get" class="flex justify-center">
+    <div class="p-4 bg-white shadow rounded-xl text-center w-full lg:w-1/4">
+        Search user by name: <br>
+        {{ filter.form.user_name}} <br>
+      Search user by email: <br>
+        {{ filter.form.email }} <br>
+
+      Search by date range: <br>
+      {{ filter.form.date_added }} <br>
+      Sort dates: {{ filter.form.oldest_first }}<br>
+        <button type="submit" class="px-5 py-3 block rounded-xl text-white bg-teal-600 hover:bg-teal-700">Filter</button>
+    </div>
+</form>
