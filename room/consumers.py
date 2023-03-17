@@ -1,17 +1,14 @@
 import json
 import os
-from PIL import Image
-from django.core.exceptions import ValidationError
-from django.core.files import File
-from django.core.files.storage import default_storage
-
-from room.models import Answer
-from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
 from django.contrib.auth import get_user_model
+from django.core.files import File
+
+from channels.generic.websocket import AsyncWebsocketConsumer
+
 
 from spa_chat import settings
-from .models import Room, Message
+from .models import Room, Message, Answer
 from .validators import validate_file, my_websocket_handler
 
 
