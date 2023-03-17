@@ -23,41 +23,16 @@ class Room(models.Model):
 
 
 
-class Message(models.Model):
-    room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), related_name="user_messages", on_delete=models.CASCADE)
-    answers = models.ManyToManyField("Answer")
-    email = models.EmailField()
-    image = models.FileField(blank=True,null=True)
-    text = models.TextField()
-
-    date_added = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ("date_added",)
-
-    def clean(self):
-        validate_html_tag(self.text)
-
-
-
-
-
-    def save(self, *args, **kwargs):
-        self.clean()
-        super(Message, self).save(*args, **kwargs)
-
-
-class Answer(models.Model):
-    room = models.ForeignKey(Room, related_name="answers", on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(), related_name="user_answers", on_delete=models.CASCADE)
+class BaseModel(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     email = models.EmailField()
     image = models.FileField(blank=True, null=True)
     text = models.TextField()
-
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        abstract = True
         ordering = ("date_added",)
 
     def clean(self):
@@ -65,4 +40,12 @@ class Answer(models.Model):
 
     def save(self, *args, **kwargs):
         self.clean()
-        super(Answer, self).save(*args, **kwargs)
+        super(BaseModel, self).save(*args, **kwargs)
+
+
+class Message(BaseModel):
+    answers = models.ManyToManyField("Answer", related_name="messages")
+
+
+class Answer(BaseModel):
+    pass

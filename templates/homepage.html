@@ -4,9 +4,14 @@
 
 {% block content %}
 
-  {% if not user.is_authenticated %}
-{#     Сделать страницу перенаправления #}
-  {% endif %}
+{% if not user.is_authenticated %}
+    <div class="text-center">
+        <h1 class="text-3xl lg:text-6xl text-white">Login to see chats</h1><br>
+        <button class="btn btn-primary" onclick="window.location.href='{% url "user:login" %}'">
+            <i class="fa fa-sign-in"></i> Log in
+        </button>
+    </div>
+{% else %}
 
 <div class="p-10 lg:p-20 text-center">
     <h1 class="text-3xl lg:text-6xl text-white">Hello,{{ user.username }}</h1>
@@ -88,4 +93,5 @@
   </nav>
 
 {% endif %}
+  {% endif %}
 {% endblock %}

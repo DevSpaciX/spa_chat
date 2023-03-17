@@ -6,8 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.forms import TextInput
 from django.shortcuts import render, redirect
+from django.utils.decorators import method_decorator
 
 from django.views import generic, View
+from django.views.decorators.cache import cache_page
 from django.views.generic import FormView
 from django_filters import rest_framework as filters
 from django_filters.widgets import RangeWidget
@@ -57,6 +59,7 @@ class RoomFilter(filters.FilterSet):
         fields = ['user_name']
 
 
+@method_decorator(cache_page(60, key_prefix="room_list"), 'get')
 class ChatRoomsList(generic.ListView):
     model = Room
     template_name = "homepage.html"
@@ -87,7 +90,7 @@ class ChatRoomDetail(generic.ListView):
 @login_required
 def room(request, pk):
     room = Room.objects.get(pk=pk)
-    messages = Message.objects.filter(room_id=pk)[0:25]
+    messages = Message.objects.filter(room_id=pk).select_related("room","user")
 
     context = {
         'room': room,

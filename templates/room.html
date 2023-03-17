@@ -31,10 +31,13 @@
             {% endif %}
           {% endif %}
           <button
-              class="ml-4 px-2 py-1 rounded-md text-sm font-medium text-gray-700 bg-gray-100 focus:outline-none focus:bg-gray-200"
-              id="chat-reply-to-input"
-              onclick="(function() { replyMessage('{{ message.id }}'); })()">Reply
-          </button>
+          class="ml-4 px-2 py-1 rounded-md text-sm font-medium text-gray-700 bg-gray-100 focus:outline-none focus:bg-gray-200"
+          onclick="(function() {
+              document.getElementById('chat-reply-to-input').value = '{{ message.id }}';
+              document.getElementById('chat-message-input').value = '{{ message.user.username }}, ';
+              document.getElementById('chat-message-input').focus();
+          })()">Reply
+      </button>
         </div>
         {% if message.answers %}
           {% for answer in message.answers.all %}

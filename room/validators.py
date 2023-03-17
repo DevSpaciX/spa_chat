@@ -38,7 +38,6 @@ def validate_file(file_path):
     max_file_size = 100 * 1024  # 100 KB
     allowed_image_formats = ['.jpg', '.jpeg', '.gif', '.png']
     allowed_text_formats = ['.txt']
-    print(file_path)
 
     file_ext = os.path.splitext(file_path)[-1].lower()
 
