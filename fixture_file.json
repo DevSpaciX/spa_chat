@@ -1,0 +1,289 @@
+[
+{
+    "model": "room.room",
+    "pk": 1,
+    "fields": {
+        "title": "Title",
+        "main_message": "first room",
+        "date_added": "2023-03-18T10:19:16.244Z"
+    }
+},
+{
+    "model": "room.room",
+    "pk": 2,
+    "fields": {
+        "title": "Depends Chat Only",
+        "main_message": "Thaths was cool !",
+        "date_added": "2023-03-18T10:28:49.151Z"
+    }
+},
+{
+    "model": "room.message",
+    "pk": 1,
+    "fields": {
+        "room": 1,
+        "user": 1,
+        "email": "winofkill@gmail.com",
+        "image": "",
+        "text": "first room",
+        "date_added": "2023-03-18T10:19:16.318Z",
+        "answers": [
+            1
+        ]
+    }
+},
+{
+    "model": "room.message",
+    "pk": 2,
+    "fields": {
+        "room": 1,
+        "user": 1,
+        "email": "winofkill@gmail.com",
+        "image": "Text_File.txt",
+        "text": "My file",
+        "date_added": "2023-03-18T10:19:26.673Z",
+        "answers": []
+    }
+},
+{
+    "model": "room.message",
+    "pk": 3,
+    "fields": {
+        "room": 1,
+        "user": 1,
+        "email": "winofkill@gmail.com",
+        "image": "2023-01-24_23-33_xHOOupy.png",
+        "text": "Hello ! Check my image ",
+        "date_added": "2023-03-18T10:19:52.755Z",
+        "answers": [
+            2
+        ]
+    }
+},
+{
+    "model": "room.message",
+    "pk": 4,
+    "fields": {
+        "room": 1,
+        "user": 1,
+        "email": "winofkill@gmail.com",
+        "image": "",
+        "text": "Answer on my question!All",
+        "date_added": "2023-03-18T10:23:37.088Z",
+        "answers": [
+            3,
+            4
+        ]
+    }
+},
+{
+    "model": "room.message",
+    "pk": 5,
+    "fields": {
+        "room": 2,
+        "user": 2,
+        "email": "winofkill@gmail.com",
+        "image": "",
+        "text": "Thaths was cool !",
+        "date_added": "2023-03-18T10:28:49.184Z",
+        "answers": [
+            5,
+            6,
+            7,
+            8
+        ]
+    }
+},
+{
+    "model": "room.message",
+    "pk": 6,
+    "fields": {
+        "room": 1,
+        "user": 3,
+        "email": "",
+        "image": "1476977240_01t4JXR.jpg",
+        "text": "",
+        "date_added": "2023-03-18T10:32:58.785Z",
+        "answers": []
+    }
+},
+{
+    "model": "room.message",
+    "pk": 7,
+    "fields": {
+        "room": 1,
+        "user": 3,
+        "email": "",
+        "image": "c-plus-plus_z14gu74.png",
+        "text": "",
+        "date_added": "2023-03-18T10:33:16.720Z",
+        "answers": []
+    }
+},
+{
+    "model": "room.message",
+    "pk": 8,
+    "fields": {
+        "room": 1,
+        "user": 3,
+        "email": "",
+        "image": "1476977488_4y0Tw2m.jpg",
+        "text": "",
+        "date_added": "2023-03-18T10:33:30.651Z",
+        "answers": []
+    }
+},
+{
+    "model": "room.answer",
+    "pk": 1,
+    "fields": {
+        "room": 1,
+        "user": 1,
+        "email": "winofkill@gmail.com",
+        "image": "",
+        "text": "user, Wow !",
+        "date_added": "2023-03-18T10:20:02.588Z"
+    }
+},
+{
+    "model": "room.answer",
+    "pk": 2,
+    "fields": {
+        "room": 1,
+        "user": 1,
+        "email": "winofkill@gmail.com",
+        "image": "",
+        "text": "user, Thats really cool !",
+        "date_added": "2023-03-18T10:20:54.331Z"
+    }
+},
+{
+    "model": "room.answer",
+    "pk": 3,
+    "fields": {
+        "room": 1,
+        "user": 2,
+        "email": "winofkill@gmail.com",
+        "image": "download_fo5Wv4W.jpeg",
+        "text": "user, Yes ! We will show depends ",
+        "date_added": "2023-03-18T10:24:38.879Z"
+    }
+},
+{
+    "model": "room.answer",
+    "pk": 4,
+    "fields": {
+        "room": 1,
+        "user": 2,
+        "email": "winofkill@gmail.com",
+        "image": "fortnite-summer-skirmish-series_SHoFjKP.png",
+        "text": "user, My message under yours !",
+        "date_added": "2023-03-18T10:25:34.780Z"
+    }
+},
+{
+    "model": "room.answer",
+    "pk": 5,
+    "fields": {
+        "room": 2,
+        "user": 2,
+        "email": "winofkill@gmail.com",
+        "image": "",
+        "text": "Sandra, Yes!",
+        "date_added": "2023-03-18T10:29:00.657Z"
+    }
+},
+{
+    "model": "room.answer",
+    "pk": 6,
+    "fields": {
+        "room": 2,
+        "user": 2,
+        "email": "winofkill@gmail.com",
+        "image": "",
+        "text": "Sandra, Brb ",
+        "date_added": "2023-03-18T10:29:14.407Z"
+    }
+},
+{
+    "model": "room.answer",
+    "pk": 7,
+    "fields": {
+        "room": 2,
+        "user": 1,
+        "email": "winofkill@gmail.com",
+        "image": "harry-potter-philosopher-s-stone-i104639_m6cv7R5.jpg",
+        "text": "Sandra, We are depended ",
+        "date_added": "2023-03-18T10:30:03.564Z"
+    }
+},
+{
+    "model": "room.answer",
+    "pk": 8,
+    "fields": {
+        "room": 2,
+        "user": 1,
+        "email": "winofkill@gmail.com",
+        "image": "628px-Achtung-yellow.svg_JLZfb8O.png",
+        "text": "Sandra, Okay bye ",
+        "date_added": "2023-03-18T10:30:55.445Z"
+    }
+},
+{
+    "model": "user.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$390000$ORlRfU4vdylevhmIeJBXTN$Bamu9Lb0+ZxLoEPy1HmZ93uPYpMa8hly5gGnTtdHYMM=",
+        "last_login": "2023-03-18T10:29:26.988Z",
+        "is_superuser": false,
+        "username": "user",
+        "first_name": "",
+        "last_name": "",
+        "email": "winofkill@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2023-03-18T10:15:06.417Z",
+        "image": "FNCS_C3S1.png",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "user.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$390000$5WSxQEMfmsL0kpCpFRGe5A$865JW4WT0CD3dLzV9LoHWiqnJId/LVmt6xBebz06tnw=",
+        "last_login": "2023-03-18T10:24:09.638Z",
+        "is_superuser": false,
+        "username": "Sandra",
+        "first_name": "",
+        "last_name": "",
+        "email": "winofkill@gmail.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2023-03-18T10:24:09.367Z",
+        "image": "1cc4-article-220525-pypi-main.jpg",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "user.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$390000$OQduSEv4zIOvoHxvkmE2sW$0oJFrYnT2PZPfMqkxZeV5ZaKLxRRjP6eSzmYIcLB4Rw=",
+        "last_login": "2023-03-18T10:32:22Z",
+        "is_superuser": true,
+        "username": "adminuser",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2023-03-18T10:31:58Z",
+        "image": "1476977240.jpg",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

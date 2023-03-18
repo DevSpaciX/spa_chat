@@ -19,7 +19,7 @@ const roomName = JSON.parse(document.getElementById('json-roomid').textContent);
                   fileHtml =
                       `<div>
                           <a href="${data.file}" download>
-                            <img src="/media/images/Circle-icons-folder.svg.png" style="height: 50px; width: 50px; margin-right: 5px;" alt="">
+                            <img src="https://cdn-icons-png.flaticon.com/512/1049/1049818.png?w=826&t=st=1679126258~exp=1679126858~hmac=449fc310f6a955fbff5f6a870a616f5468e5dbd3f8538f4ab31c315565b6f77a" style="height: 50px; width: 50px; margin-right: 5px;" alt="">
                           </a>
                       </div>`;
               }
