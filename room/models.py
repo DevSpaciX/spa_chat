@@ -2,7 +2,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
 from django.db import models
-from .tasks import validate_html_tag
+
+from room.validators import validate_html_tag
 
 
 class Room(models.Model):
