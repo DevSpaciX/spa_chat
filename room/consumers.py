@@ -6,14 +6,13 @@ from django.core.files import File
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-
+from room.tasks import validate_file
 from spa_chat import settings
-from .models import Room, Message, Answer
-from .validators import validate_file, my_websocket_handler
+from room.models import Room, Message, Answer
+from room.validators import my_websocket_handler
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
-
     async def connect(self):
         self.roomid = self.scope["url_route"]["kwargs"]["roomID"]
         self.room_group_name = "chat_%s" % self.roomid
@@ -25,7 +24,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def disconnect(self, data):
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
 
-
     async def receive(self, text_data):
         errors = []
         data = json.loads(text_data)
@@ -35,17 +33,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         room = data["room"]
         avatar = data["userImage"]
         answer_to = data["answer_to"]
-        print(answer_to)
         file_path = file_path_socket = None
 
         if data.get("file"):
-            file_name = data['file']['name']
-            file_content = data['file']['content']
+            file_name = data["file"]["name"]
+            file_content = data["file"]["content"]
 
             file_path = os.path.join(settings.MEDIA_ROOT, file_name)
             file_path_socket = os.path.join(settings.MEDIA_URL, file_name)
-            print(file_path_socket)
-            with open(file_path, 'wb') as file:
+            with open(file_path, "wb") as file:
                 file.write(bytes(file_content))
 
             file_errors = validate_file(file_path)
@@ -62,8 +58,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         await self.channel_layer.group_send(
             self.room_group_name,
-            {"type": "chat_message", "message": message_text, "username": username, "avatar": avatar,
-             "file": file_path_socket,"answer":answer_to},
+            {
+                "type": "chat_message",
+                "message": message_text,
+                "username": username,
+                "avatar": avatar,
+                "file": file_path_socket,
+                "answer": answer_to,
+            },
         )
 
     async def chat_message(self, event):
@@ -74,7 +76,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
         answer = event["answer"]
 
         await self.send(
-            text_data=json.dumps({"message": message, "username": username, "avatar": avatar, "file": file,"answer":answer})
+            text_data=json.dumps(
+                {
+                    "message": message,
+                    "username": username,
+                    "avatar": avatar,
+                    "file": file,
+                    "answer": answer,
+                }
+            )
         )
 
     @sync_to_async
@@ -86,9 +96,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @staticmethod
     def create_message_or_answer(user, room, message, file_path, answer_to=None):
         model = Answer if answer_to else Message
-        kwargs = {'user': user, 'room': room, 'text': message, 'email': user.email}
+        kwargs = {"user": user, "room": room, "text": message, "email": user.email}
         if file_path:
-            with open(file_path, 'rb') as file:
+            with open(file_path, "rb") as file:
                 created_obj = model.objects.create(**kwargs)
                 created_obj.image.save(os.path.basename(file_path), File(file))
                 if answer_to:
@@ -102,10 +112,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         else:
             model.objects.create(**kwargs)
 
-
-
     async def send_error(self, errors):
         await self.send(
             text_data=json.dumps({"error": errors}),
         )
-

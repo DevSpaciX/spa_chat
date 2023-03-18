@@ -13,6 +13,8 @@
       {% for message in messages %}
         <div style="display: flex; align-items: center;">
           <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px" src="{{ message.user.image.url }}"
+               alt="image"/>
+          <img style="display: none;width: 50px;height: 50px;border-radius: 50%; margin-right: 5px" src="{{ request.user.image.url }}"
                id="user-avatar"
                alt="image"/>
 
@@ -21,7 +23,7 @@
             {% if message.image.url|split_last == 'txt' %}
               <a href="{{ message.image.url }}" download>
                 <img style="width: 50px;height: 50px;border-radius: 50%; margin-right: 5px"
-                     src="/media/images/Circle-icons-folder.svg.png" alt="image">
+                     src="https://cdn-icons-png.flaticon.com/512/1049/1049818.png?w=826&t=st=1679126258~exp=1679126858~hmac=449fc310f6a955fbff5f6a870a616f5468e5dbd3f8538f4ab31c315565b6f77a" alt="image">
               </a>
             {% else %}
               <a class="fancybox" href="{{ message.image.url }}">
@@ -38,6 +40,9 @@
               document.getElementById('chat-message-input').focus();
           })()">Reply
       </button>
+        <span class="message-date" style="color: #999; font-size: 12px;margin-left: 20px">
+            {{ message.date_added|date:"j F Y H:i" }}
+        </span>
         </div>
         {% if message.answers %}
           {% for answer in message.answers.all %}
@@ -48,6 +53,9 @@
                      id="user-avatar"
                      alt="image"/>
                 <b>{{ answer.user.username }}</b>: {{ answer.text }}
+                <span class="message-date" style="color: #999; font-size: 12px;margin-left: 20px">
+                    {{ message.date_added|date:"j F Y H:i" }}
+                </span>
                 {% if answer.image %}
                   {% if answer.image.url|split_last == 'txt' %}
                     <a href="{{ answer.image.url }}" download>

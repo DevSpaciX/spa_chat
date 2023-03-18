@@ -17,21 +17,7 @@
     <h1 class="text-3xl lg:text-6xl text-white">Hello,{{ user.username }}</h1>
 </div>
 {% block filter %}
-
-<form method="get" class="flex justify-center">
-    <div class="p-4 bg-white shadow rounded-xl text-center w-full lg:w-1/4">
-        Search user by name: <br>
-        {{ filter.form.user_name}} <br>
-      Search user by email: <br>
-        {{ filter.form.email }} <br>
-
-      Search by date range: <br>
-      {{ filter.form.date_added }} <br>
-      Sort dates: {{ filter.form.oldest_first }}<br>
-        <button type="submit" class="px-5 py-3 block rounded-xl text-white bg-teal-600 hover:bg-teal-700">Filter</button>
-    </div>
-</form>
-
+{% include "filtering.html" %}
   {% endblock %}
 
 <div class="w-full flex flex-wrap items-center">
@@ -39,13 +25,15 @@
         <div class="w-full lg:w-1/4 px-3 py-3">
             <div class="p-4 bg-white shadow rounded-xl text-center">
                 <h2 class="mb-1 text-2xl font-semibold">{{ room.title }}</h2><br>
-              <h2 class="mb-1 text-xl font-semibold">Author : {{ room.messages.first.user }}</h2><br>
+              <h2 class="mb-1 text-xl font-semibold">Author : {{ room.message_set.first.user }}</h2><br>
               <h2 class="mb-1 text-xl font-semibold">{{ room.main_message }}</h2><br>
                 <h2 class="mb-1 text-xs font-semibold">{{ room.date_added }}</h2>
 
                 <a href="{% url 'room:room' pk=room.pk %}" class="px-5 py-3 block rounded-xl text-white bg-teal-600 hover:bg-teal-700">Join</a>
             </div>
         </div>
+      {% empty %}
+        <h2 class="mb-1 text-2xl font-semibold">There is no messages now (</h2><br>
     {% endfor %}
 </div>
 

@@ -1,6 +1,3 @@
-from uuid import uuid4
-
-from captcha.fields import ReCaptchaField
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -19,55 +16,63 @@ from room.models import Room, Message
 
 
 class RoomFilter(filters.FilterSet):
-    user_name = filters.CharFilter(field_name='messages__user__username', lookup_expr='icontains', widget=TextInput(attrs={
-            'style': 'border: 1px solid black; border-radius: 10px;'
-        }))
-    email = filters.CharFilter(field_name='messages__user__email', lookup_expr='icontains',widget=TextInput(attrs={
-            'style': 'border: 1px solid black; border-radius: 10px;'
-        }))
+    user_name = filters.CharFilter(
+        field_name="message__user__username",
+        lookup_expr="icontains",
+        widget=TextInput(
+            attrs={"style": "border: 1px solid black; border-radius: 10px;"}
+        ),
+    )
+    email = filters.CharFilter(
+        field_name="message__user__email",
+        lookup_expr="icontains",
+        widget=TextInput(
+            attrs={"style": "border: 1px solid black; border-radius: 10px;"}
+        ),
+    )
     oldest_first = filters.BooleanFilter(
-        widget=forms.RadioSelect(choices=((True, 'Oldest First'), (False, 'Newest First'))),
-        label='Oldest First',
-        method='filter_oldest_first'
+        widget=forms.RadioSelect(
+            choices=((True, "Oldest First"), (False, "Newest First"))
+        ),
+        label="Oldest First",
+        method="filter_oldest_first",
     )
 
     date_added = filters.DateFromToRangeFilter(
-        field_name='date_added',
-        widget=RangeWidget(attrs={
-            'class': 'dateinput',
-            'type': 'date'
-        }),
-        method="filter_date_added"
+        field_name="date_added",
+        widget=RangeWidget(attrs={"class": "dateinput", "type": "date"}),
+        method="filter_date_added",
     )
 
     def filter_date_added(self, queryset, name, value):
         start_date = value.start
         end_date = value.stop
-        if self.data.get('oldest_first'):
+        if self.data.get("oldest_first"):
             return queryset.filter(date_added__range=(start_date, end_date))
         else:
             return queryset.filter(date_added__range=(start_date, end_date))
 
-    def filter_oldest_first(self, queryset, name, value):
+    @staticmethod
+    def filter_oldest_first(queryset, name, value):
         if value:
-            return queryset.order_by('date_added')
+            return queryset.order_by("date_added")
         else:
-            return queryset.order_by('-date_added')
+            return queryset.order_by("-date_added")
 
     class Meta:
         model = Room
-        fields = ['user_name']
+        fields = ["user_name"]
 
 
-@method_decorator(cache_page(60, key_prefix="room_list"), 'get')
+@method_decorator(cache_page(60, key_prefix="room_list"), "get")
 class ChatRoomsList(generic.ListView):
     model = Room
-    template_name = "homepage.html"
+    template_name = "rooms.html"
     paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = RoomFilter(self.request.GET)
+        context["filter"] = RoomFilter(self.request.GET)
         return context
 
     def get_queryset(self):
@@ -76,29 +81,16 @@ class ChatRoomsList(generic.ListView):
         return filter.qs.distinct()
 
 
-class ChatRoomDetail(generic.ListView):
-    model = Room
-    template_name = "homepage.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        messages = Message.objects.all()
-        context['messages'] = messages
-        return context
-
-
-@login_required
-def room(request, pk):
-    room = Room.objects.get(pk=pk)
-    messages = Message.objects.filter(room_id=pk).select_related("room","user")
-
-    context = {
-        'room': room,
-        'messages': messages,
-    }
-
-    return render(request, 'room.html', context)
-
+class RoomDetailView(View):
+    def get(self, request, pk):
+        room = Room.objects.get(pk=pk)
+        messages = (
+            Message.objects.filter(room_id=pk)
+            .select_related("room", "user")
+            .order_by("date_added")
+        )
+        context = {"room": room, "messages": messages}
+        return render(request, "room.html", context)
 
 class RoomCreateView(FormView):
     template_name = "room_create.html"
@@ -115,7 +107,7 @@ class RoomCreateView(FormView):
             return redirect("room:room", pk=new_room.pk)
 
         except ValidationError as e:
-            form.add_error('title', e)
+            form.add_error("title", e)
             return self.form_invalid(form)
 
     def form_invalid(self, form):

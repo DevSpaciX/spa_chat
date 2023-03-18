@@ -2,8 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 
 from django.db import models
-
-from room.validators import validate_html_tag
+from .tasks import validate_html_tag
 
 
 class Room(models.Model):
@@ -22,14 +21,16 @@ class Room(models.Model):
         super(Room, self).save(*args, **kwargs)
 
 
-
 class BaseModel(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     email = models.EmailField()
     image = models.FileField(blank=True, null=True)
-    text = models.TextField()
+    text = models.TextField(max_length=300)
     date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.text[:20]
 
     class Meta:
         abstract = True
@@ -45,6 +46,7 @@ class BaseModel(models.Model):
 
 class Message(BaseModel):
     answers = models.ManyToManyField("Answer", related_name="messages")
+
 
 
 class Answer(BaseModel):

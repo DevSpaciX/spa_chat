@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}| {% endblock %}
+
+{% block content %}
+
+    <div class="text-center">
+    <h1 class="text-3xl lg:text-6xl text-white">You successfully logged out</h1><br>
+        <h1 class="text-3xl lg:text-6xl text-white">Login to see chats</h1><br>
+        <button class="btn btn-primary" onclick="window.location.href='{% url "user:login" %}'">
+            <i class="fa fa-sign-in"></i> Log in
+        </button>
+    </div>
+
+{% endblock %}

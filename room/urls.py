@@ -7,8 +7,8 @@ from .views import ChatRoomsList, RoomCreateView
 
 urlpatterns = [
     path("", ChatRoomsList.as_view(), name="rooms"),
-    path("<int:pk>/",views.room, name="room"),
-    path('room/create/', RoomCreateView.as_view(), name='room_create'),
+    path("<int:pk>/", views.RoomDetailView.as_view(), name="room"),
+    path("room/create/", RoomCreateView.as_view(), name="room_create"),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

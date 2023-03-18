@@ -9,33 +9,41 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('room', '0006_answer_message_answers'),
+        ("room", "0006_answer_message_answers"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='answer',
-            name='room',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='room.room'),
+            model_name="answer",
+            name="room",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="room.room"
+            ),
         ),
         migrations.AlterField(
-            model_name='answer',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="answer",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AlterField(
-            model_name='message',
-            name='answers',
-            field=models.ManyToManyField(related_name='messages', to='room.answer'),
+            model_name="message",
+            name="answers",
+            field=models.ManyToManyField(related_name="messages", to="room.answer"),
         ),
         migrations.AlterField(
-            model_name='message',
-            name='room',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='room.room'),
+            model_name="message",
+            name="room",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="room.room"
+            ),
         ),
         migrations.AlterField(
-            model_name='message',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="message",
+            name="user",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
     ]

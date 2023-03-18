@@ -1,8 +1,6 @@
 from captcha.fields import ReCaptchaField
 from django import forms
-from django.core.exceptions import ValidationError
-
-from .models import Room, Message
+from .models import Room
 
 
 class RoomCreateForm(forms.ModelForm):
@@ -10,10 +8,5 @@ class RoomCreateForm(forms.ModelForm):
 
     class Meta:
         model = Room
-        fields = ["title","main_message"]
-
-class MessageForm(forms.Form):
-    text = forms.CharField()
-    file = forms.FileField(required=False)
-    captcha = ReCaptchaField()
+        fields = ["title", "main_message"]
 
