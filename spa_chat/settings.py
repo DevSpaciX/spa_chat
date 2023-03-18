@@ -11,7 +11,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY","(v++s*5lf4))xd#pojeb6$xoetwrkh3
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0","127.0.0.1"]
+ALLOWED_HOSTS = ["0.0.0.0","127.0.0.1","spa-chat.onrender.com"]
 
 INTERNAL_IPS = [
     "127.0.0.1",
