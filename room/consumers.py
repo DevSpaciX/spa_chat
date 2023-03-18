@@ -6,7 +6,7 @@ from django.core.files import File
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from room.tasks import validate_file
+from room.validators import validate_file
 from spa_chat import settings
 from room.models import Room, Message, Answer
 from room.validators import my_websocket_handler
