@@ -3,6 +3,14 @@
 {% block title %}Log in | {% endblock %}
 
 {% block content %}
+  {% if not user.is_authenticated %}
+    <div class="text-center">
+        <h1 class="text-3xl lg:text-6xl text-white">Login to see chats</h1><br>
+        <button class="btn btn-primary" onclick="window.location.href='{% url "user:login" %}'">
+            <i class="fa fa-sign-in"></i> Log in
+        </button>
+    </div>
+{% else %}
 <div class="p-10 lg:p-20 text-center">
     <h1 class="text-3xl lg:text-6xl text-white">Create conversation</h1>
 </div>
@@ -22,6 +30,9 @@
         <label class="text-white">Capcha</label>
         {{ form.captcha }}
     </div>
+        <button class="px-5 py-3 rounded-xl text-white bg-teal-800 hover:bg-teal-700">Create</button>
+</form>
+{% endif %}
 
 {% if form.errors %}
     <div class="alert alert-danger" role="alert">
@@ -33,6 +44,4 @@
     </div>
   {% endif %}
 
-    <button class="px-5 py-3 rounded-xl text-white bg-teal-800 hover:bg-teal-700">Create</button>
-</form>
 {% endblock %}

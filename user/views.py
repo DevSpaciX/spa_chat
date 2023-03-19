@@ -23,6 +23,7 @@ class SignUpView(View):
         if form.is_valid():
             user = form.save()
             login(request, user)
+            print("Redirecting")
             return redirect(reverse("room:rooms"))
         return render(request, "signup.html", {"form": form})
 
@@ -42,6 +43,7 @@ class LoginView(View):
             )
             if user is not None:
                 login(request, user)
+                print("Redirecting")
                 return redirect(reverse("room:rooms"))
             form.add_error(None, "Invalid username or password")
         return render(request, "login.html", {"form": form})

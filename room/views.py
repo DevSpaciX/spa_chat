@@ -64,7 +64,7 @@ class RoomFilter(filters.FilterSet):
         fields = ["user_name"]
 
 
-@method_decorator(cache_page(60, key_prefix="room_list"), "get")
+@method_decorator(cache_page(7, key_prefix="room_list"), "get")
 class ChatRoomsList(generic.ListView):
     model = Room
     template_name = "rooms.html"
