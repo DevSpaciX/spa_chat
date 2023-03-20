@@ -126,7 +126,7 @@ CELERY_RESULT_URL = "redis://redis:6379"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = "/media/"
-MEDIA_ROOT = "/vol/web/media"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 AUTH_USER_MODEL = "user.User"
 LOGOUT_REDIRECT_URL = "user:homepage"
 LOGIN_URL = "/login/"
