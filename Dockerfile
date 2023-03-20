@@ -1,4 +1,4 @@
-FROM python:3.10.9-slim-buster
+FROM python:3.10.8
 LABEL maintainer="spacix@gmail.com"
 
 RUN mkdir /app

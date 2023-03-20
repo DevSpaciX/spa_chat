@@ -9,7 +9,7 @@ SECRET_KEY = "django-insecure-x&-+o6xae!b1oe^%9zr37+ob_is=g@qrhxbf@=j7jdxt6n_5mt
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["0.0.0.0"]
+ALLOWED_HOSTS = ["0.0.0.0","127.0.0.1"]
 
 INTERNAL_IPS = [
     "127.0.0.1",
@@ -68,11 +68,8 @@ ASGI_APPLICATION = "spa_chat.asgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "HOST": os.environ["POSTGRES_HOST"],
-        "NAME": os.environ["POSTGRES_DB"],
-        "USER": os.environ["POSTGRES_USER"],
-        "PASSWORD": os.environ["POSTGRES_PASSWORD"],
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
