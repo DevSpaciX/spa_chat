@@ -32,6 +32,7 @@ docker-compose up
 - Registration on site
 ### Admin data:
 - If you want to access by admin user - just login by this data ```Login:adminuser Password:admin```
+- Important ! If you want to create chat with admin credentionals DON`t Forget to add image on user profile via /admin/site -> choose image 
 
 ## Screenshots:
 ![image](https://user-images.githubusercontent.com/102595649/226098831-abf7479b-cb6f-4602-8d23-cd387e560b65.png)
